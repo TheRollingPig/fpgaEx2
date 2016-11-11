@@ -1,0 +1,72 @@
+typedef struct myStruct
+{
+	uint16_t head;
+	uint32_t type;
+	uint32_t data[15];
+	uint8_t  checksum;
+}myStruct_t, *p_myStruct_t;
+
+int main()
+{
+	myStruct_t a;
+	a.head = 0x1234;
+	a.type = 0xdeadbeef;
+	return 0;
+}
+
+/*
+let address of a = 0x1000, and we use a 32-bit cpu system.
+Q1: sizeof( a ) = ?
+	sizeof( a ) = 72
+	
+Q2: int b = (int) & a.type - (int) & a.head; b = ?
+	a.head 	      0x1000
+	padding x 2
+	a.type        0x1004
+	a.data[0]     0x1008
+	a.checksum    0x1044
+	padding x 3
+	
+	int b = 0x1004 - 0x1000 = 0x0004
+	
+Q3: If the system use little endian, write down the memory from 0x1000 to 0x1008 byte by byte:
+	
+	0x1000		0x34
+	0x1001		0x12
+	0x1002		0x00
+	0x1003		0x00
+	0x1004		0xEF
+	0x1005		0xBE
+	0x1006		0xAD
+	0x1007		0xDE
+	0x1008		0x00
+	
+Q4: With "pragma pack(1)" before the typedef, answer all 3 question avbove again.
+	If we do a read operation b = a.type now, describe what will happen in cpu.
+	
+	1: 
+	sizeof( a ) = 67
+	
+	2:
+	a.head 	   0x1000
+	a.type     0x1002
+	a.data     0x1006
+	a.checksum 0x1042
+	
+	int b = 0x1002 - 0x1000 = 0x0002
+	
+	3:
+	0x1000		0x34
+	0x1001		0x12
+	0x1002		0xEF
+	0x1003		0xBE
+	0x1004		0xAD
+	0x1005		0xDE
+	0x1006		0x00
+	0x1007		0x00
+	0x1008		0x00
+
+refference:
+http://stackoverflow.com/questions/4306186/structure-padding-and-packing
+http://c.biancheng.net/cpp/html/469.html
+*/
