@@ -104,8 +104,9 @@ module myuart_tb;
 		
 		// APB write IMR
 		#( APB_FULL_PERIOD * 5 )
+		@ ( posedge pclk )
 		paddr = IMR_OFFSET;
-		@ ( posedge pclk ) pwrite = 1'b1;
+		pwrite = 1'b1;
 		psel = 1'b1;
 		pwdata = IMR_TEMP;
 		#( APB_FULL_PERIOD * 1 )
@@ -116,8 +117,9 @@ module myuart_tb;
 		
 		// APB write THR
 		#( APB_FULL_PERIOD * 1 )
+		@ ( posedge pclk )
 		paddr = THR_OFFSET;
-		@ ( posedge pclk ) pwrite = 1'b1;
+		pwrite = 1'b1;
 		psel = 1'b1;
 		pwdata = THR_TEMP;
 		#( APB_FULL_PERIOD * 1 )
@@ -134,8 +136,9 @@ module myuart_tb;
 		
 		// APB write SR clear
 		#( APB_FULL_PERIOD * 1 )
+		@ ( posedge pclk )
 		paddr = SR_OFFSET;
-		@ ( posedge pclk ) pwrite = 1'b1;
+		pwrite = 1'b1;
 		psel = 1'b1;
 		pwdata = 32'b1;
 		#( APB_FULL_PERIOD * 1 )
@@ -181,8 +184,9 @@ module myuart_tb;
 		
 		// APB read RHR
 		#( APB_FULL_PERIOD * 1 )
+		@ ( posedge pclk )
 		paddr = RHR_OFFSET;
-		@ ( posedge pclk ) pwrite = 1'b0;
+		pwrite = 1'b0;
 		psel = 1'b1;
 		#( APB_FULL_PERIOD * 1 )
 		penable = 1'b1;
